@@ -1,0 +1,33 @@
+Fitzpatrick Rinsen - 89794
+
+1. MVVM memisahkan UI dari business logic sehingga perubahan pada UI tidak memengaruhi logic, dan perubahan pada logic tidak merusak UI. Aplikasi lebih mudah dipelihara, lebih mudah dites, dan lebih scalable ketika data serta jumlah view meningkat. MVVM juga membuat code lebih modular dan bersih.
+
+yang merupakan file model adalah:
+Movie.kt (Model + Entity Room) 
+MovieDao.kt
+MovieDatabase.kt
+API: MovieService
+
+yang merupakan bagian view:
+activity_main.xml
+RecyclerView + adapter (MovieAdapter)
+
+yang merupakan file viewmodel dalah MovieViewModel.kt
+
+2. Data Binding lebih efisien dibanding metode biasa karena tanpa Data Binding, View harus mencari komponen UI menggunakan findViewById, lalu secara manual meng-update UI setiap kali data berubah. Hal ini dimungkinkan karena XML terhubung langsung dengan ViewModel. Kemudian, resiko bug lebih kecil karena hubungan View–ViewModel lebih terstruktur.
+
+3. Singleton Pattern penting karena:
+- Membuat database thread-safe (dibantu @Volatile dan synchronized) 
+- Mencegah race condition antar-thread.
+- Menghindari overhead pembuatan banyak instance database (sangat mahal secara proses).
+- Menjaga konsistensi data selama aplikasi berjalan.
+Tanpa Singleton, database bisa dibuat banyak kali dan menyebabkan crash, inkonsistensi, dan konsumsi resource yang besar.
+
+4. Repository Pattern penting karena Repository Pattern berfungsi sebagai abstraction layer antara API (network) dan Room database (local storage). Repository Pattern membuat semuanya menjadi lebih sistematis dalam hal management, sehingga Repository adalah pola yang disarakan atau bahkan wajib untuk aplikasi yang menggunakan API dan Room.
+
+5. Selain WorkManager, beberapa cara lain untuk me-refresh database adalah:
+- Manual refresh di UI (kekurangan: tidak otomatis)
+- Timer/Handler di Activity (kekurangan: tidak berjalan jika aplikasi ditutup dan tidak efisien)
+- Foreground Service (kekurangan: otomatis tapi sangat berat (resource intensive))
+- BroadcastReceiver (CONNECTIVITY_CHANGE, BOOT_COMPLETED) (kekurangan: tidak menjadwalkan pekerjaan secara periodik)
+- AlarmManager (kekurangan: kurang akurat dan tidak sefleksibel WorkManager)
